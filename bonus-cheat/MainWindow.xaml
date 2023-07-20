@@ -5,8 +5,78 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bonus_cheat"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="1200">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <!-- Left player's rack -->
+            <ColumnDefinition Width="800"/>
+            <!-- Center Scrabble board -->
+            <ColumnDefinition Width="*"/>
+            <!-- Right player's rack -->
+        </Grid.ColumnDefinitions>
 
+        <!-- Left player's rack -->
+        <StackPanel Name="leftPlayerRack" Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+            <!-- Add tiles for the left player here -->
+            <!-- For example, you can use Buttons to represent the player's tiles -->
+            <!--<Button Content="A" Width="40" Height="40" Margin="5"/>-->
+            <!--<Button Content="B" Width="40" Height="40" Margin="5"/>-->
+            <!-- Add more buttons for the player's tiles as needed -->
+        </StackPanel>
+
+        <!-- Scrabble Board -->
+        <Border Grid.Row="0" Grid.Column="1" Margin="10">
+            <Grid Name="scrabbleBoard">
+                <!-- Add 15x15 grid for cells -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+        </Border>
+
+        <!-- Right player's rack -->
+        <StackPanel Name="rightPlayerRack" Grid.Row="0" Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+            <!-- Add tiles for the right player here -->
+            <!-- For example, you can use Buttons to represent the player's tiles -->
+            <!--<Button Content="C" Width="40" Height="40" Margin="5"/>-->
+            <!--<Button Content="D" Width="40" Height="40" Margin="5"/>-->
+            <!-- Add more buttons for the player's tiles as needed -->
+        </StackPanel>
+
+        <!-- Tile Rack -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Name="tileRack" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+            <!-- Add tile content here, e.g., Buttons representing tiles -->
+        </StackPanel>
     </Grid>
 </Window>

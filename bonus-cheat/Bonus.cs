@@ -20,7 +20,7 @@ namespace bonus_cheat
         const int BONUS_NUM_PLAYER_LETTERS = 8;
         const int BONUS_BOARD_SIZE = 0x9b;
 
-        const int BONUS_BOARD_DIMENTION = 12;
+        public const int BONUS_BOARD_DIMENTION = 12;
 
         const int CODE_PAGE_862_START = 0x80;
         const int CODE_PAGE_862_END = 0x9A;
