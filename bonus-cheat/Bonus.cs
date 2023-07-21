@@ -17,7 +17,7 @@ namespace bonus_cheat
         const int BONUS_MEM_OFFSET_RACK = 0x4C434;
         const int BONUS_MEM_OFFSET_BOARD = 0x4C444;
 
-        const int BONUS_NUM_PLAYER_LETTERS = 8;
+        public const int BONUS_NUM_PLAYER_LETTERS = 8;
         const int BONUS_BOARD_SIZE = 0x9b;
 
         public const int BONUS_BOARD_DIMENTION = 12;
@@ -28,6 +28,8 @@ namespace bonus_cheat
         private ProcessMemoryWriter memoryWriter;
         private IntPtr baseAddress;
 
+        private char[] letters;
+
         private static readonly char[] CodePage862ToUTF8Mapping = new char[]
         {
             // Custom mapping from Code Page 862 to UTF-8
@@ -35,10 +37,16 @@ namespace bonus_cheat
             'נ', 'ס', 'ע', 'ף', 'פ', 'ץ', 'צ', 'ק', 'ר', 'ש', 'ת'
         };
 
-        public enum Player
+        private static readonly ISet<char> BonusInvalidLetters = new HashSet<char>
+        {
+            'ך', 'ם', 'ן', 'ף', 'ץ'
+        };
+
+        public enum Entity
         {
             Player1,
-            Player2
+            Player2,
+            Rack
         }
 
         public Bonus()
@@ -52,6 +60,17 @@ namespace bonus_cheat
 
             this.baseAddress = baseAddresses[0];
 
+            letters = new char[CodePage862ToUTF8Mapping.Length - BonusInvalidLetters.Count];
+            int index = 0;
+
+            foreach (var letter in CodePage862ToUTF8Mapping)
+            {
+                if (!BonusInvalidLetters.Contains(letter))
+                {
+                    letters[index++] = letter;
+                }
+            }
+
             /*
             byte[] p1letters = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER1_LETTERS, BONUS_NUM_PLAYER_LETTERS);
             byte[] p2letters = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER2_LETTERS, BONUS_NUM_PLAYER_LETTERS);
@@ -59,18 +78,18 @@ namespace bonus_cheat
 
             byte[] board = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_BOARD, BONUS_BOARD_SIZE);
 
-            char[] letters = getPlayerLetters(Player.Player1);
-            char[,] boardArr = getBoard();
+            char[] letters = GetEntityLetters(Entity.Player1);
+            char[,] boardArr = GetBoard();
             */
 
-            //this.memoryWriter.WriteMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER1_LETTERS, new byte[]{ 0x90, 0x91});
+            //this.memoryWriter.WriteMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER1_LETTERS, new byte[]{ 0x90, 0x91, 0x92});
 
         }
 
-        public char[] getPlayerLetters(Player player)
+        public char[] GetEntityLetters(Entity entity)
         {
             char[] res = new char[BONUS_NUM_PLAYER_LETTERS];
-            int offset = getPlayerMemOffset(player);
+            int offset = GetEntityMemOffset(entity);
 
             byte[] letters = this.memoryWriter.ReadMemory(baseAddress + offset, BONUS_NUM_PLAYER_LETTERS);
             
@@ -83,32 +102,19 @@ namespace bonus_cheat
         }
 
 
-        public void setPlayerLetter(Player player, int index, char letter)
+        public void SetEntityLetter(Entity entity, int index, char letter)
         {
             if (index < 0 || index > BONUS_NUM_PLAYER_LETTERS)
             {
-                throw new ArgumentException("Invalid index for setting player letter");
+                throw new ArgumentException("Invalid index for setting entity letter");
             }
 
             byte b = ConvertUTF8ToCodePage862(letter);
 
-            this.memoryWriter.WriteMemory(baseAddress + getPlayerMemOffset(player) + index, new byte[] { b });
-        }
-        public char[] getRackLetters()
-        {
-            char[] res = new char[BONUS_NUM_PLAYER_LETTERS];
-
-            byte[] letters = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_RACK, BONUS_NUM_PLAYER_LETTERS);
-
-            for (var i = 0; i < res.Length; i++)
-            {
-                res[i] = ConvertCodePage862ToUTF8(letters[i]);
-            }
-
-            return res;
+            this.memoryWriter.WriteMemory(baseAddress + GetEntityMemOffset(entity) + index, new byte[] { b });
         }
 
-        public char[,] getBoard()
+        public char[,] GetBoard()
         {
             char[,] res = new char[BONUS_BOARD_DIMENTION, BONUS_BOARD_DIMENTION];
 
@@ -128,7 +134,7 @@ namespace bonus_cheat
             return res;
         }
 
-        public void setBoardLetter(int row, int col, char letter)
+        public void SetBoardLetter(int row, int col, char letter)
         {
             if ( (row < 0 || row > BONUS_BOARD_DIMENTION) || (col < 0 || col > BONUS_BOARD_DIMENTION) )
             {
@@ -144,12 +150,21 @@ namespace bonus_cheat
             this.memoryWriter.WriteMemory(baseAddress + BONUS_MEM_OFFSET_BOARD + index, new byte[] { b });
         }
 
-        private int getPlayerMemOffset(Player player)
+        public char[] Letters
         {
-            return new Dictionary<Player, int>
+            get
             {
-                { Player.Player1, BONUS_MEM_OFFSET_PLAYER1_LETTERS },
-                { Player.Player2, BONUS_MEM_OFFSET_PLAYER2_LETTERS }
+                return this.letters;
+            }
+        }
+
+        private int GetEntityMemOffset(Entity player)
+        {
+            return new Dictionary<Entity, int>
+            {
+                { Entity.Player1, BONUS_MEM_OFFSET_PLAYER1_LETTERS },
+                { Entity.Player2, BONUS_MEM_OFFSET_PLAYER2_LETTERS },
+                { Entity.Rack,    BONUS_MEM_OFFSET_RACK }
             }[player];
         }
 

@@ -97,10 +97,13 @@ namespace bonus_cheat
         public static extern bool WriteProcessMemory
         (IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint dwSize, ref uint lpNumberOfBytesWritten);
 
-        IntPtr processHandle = IntPtr.Zero;
+        [DllImport("kernel32.dll")]
+        static extern uint GetLastError();
+
+        Process process;
         public ProcessMemoryWriter(string processName)
         {
-            this.processHandle = GetProcessHandleByName(processName);
+            this.process = GetProcessByName(processName);
         }
 
         public List<IntPtr> LocateWritableMemoryRangeBySize(uint size)
@@ -116,7 +119,7 @@ namespace bonus_cheat
             do
             {
                 MEMORY_BASIC_INFORMATION memInfo;
-                int result = VirtualQueryEx(this.processHandle, currentAddress, out memInfo, (uint)Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION)));
+                int result = VirtualQueryEx(this.process.Handle, currentAddress, out memInfo, (uint)Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION)));
                 if (result == 0)
                 {
                     break;
@@ -126,7 +129,7 @@ namespace bonus_cheat
                 {
                     res.Add (memInfo.BaseAddress);
                     Debug.WriteLine(String.Format("Found base address 0x{0:X} of size 0x{1:X} for process handle 0x{2:X}", memInfo.BaseAddress,
-                        size, this.processHandle));
+                        size, this.process.Handle));
                 }
 
                 currentAddress = new IntPtr(memInfo.BaseAddress.ToInt64() + memInfo.RegionSize.ToInt64()); ;
@@ -140,7 +143,7 @@ namespace bonus_cheat
             uint bytesRead = 0;
             byte[] buffer = new byte[size];
 
-            if ( (ReadProcessMemory(this.processHandle, address, buffer, size, ref bytesRead) == false) || (bytesRead != size) )
+            if ( (ReadProcessMemory(this.process.Handle, address, buffer, size, ref bytesRead) == false) || (bytesRead != size) )
             {
                 throw new Exception(String.Format("Could not read {0} bytes from address 0x{1:X}", size, address));
             }
@@ -152,17 +155,16 @@ namespace bonus_cheat
         {
             uint bytesWritten = 0;
 
-
-            if ((WriteProcessMemory(this.processHandle, address, buffer, (uint)buffer.Length, ref bytesWritten) == false) || (bytesWritten != buffer.Length))
+            if ((WriteProcessMemory(this.process.Handle, address, buffer, (uint)buffer.Length, ref bytesWritten) == false) || (bytesWritten != buffer.Length))
             {
-                throw new Exception(String.Format("Could not write {0} bytes to address 0x{1:X}", buffer.Length, address));
+                uint error = GetLastError();
+                throw new Exception(String.Format("Could not write {0} bytes to address 0x{1:X} (Error: 0x{2:X})", buffer.Length, address, error));
             }
 
         }
 
-        private static IntPtr GetProcessHandleByName(string name)
+        private static Process GetProcessByName(string name)
         {
-            IntPtr handle = IntPtr.Zero;
             Process[] processes = Process.GetProcessesByName(name);
             if (processes.Length == 0)
             {
@@ -173,10 +175,8 @@ namespace bonus_cheat
                 throw new InvalidOperationException(String.Format("Too many instances of '{0}'", name));
             }
 
-            handle = processes[0].Handle;
+            return processes[0];
 
-            Debug.WriteLine(String.Format("Found process handle 0x{0:X} for process {1}", handle, name));
-            return handle;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace bonus_cheat
             try
             {
                 this.bonus = new Bonus();
+                this.Refresh();
             }
             catch (Exception e)
             {
@@ -37,16 +38,17 @@ namespace bonus_cheat
                 // TODO: Handle
             }
 
+        }
+
+        private void Refresh()
+        {
             InitializeScrabbleBoard();
-
-            PopulateTileRack();
-
-            PopulatePlayerRacks();
+            PopulateRacks();
         }
 
         private void InitializeScrabbleBoard()
         {
-            char[,] board = this.bonus.getBoard();
+            char[,] board = this.bonus.GetBoard();
             
             for (int row = 0; row < Bonus.BONUS_BOARD_DIMENTION; row++)
             {
@@ -113,31 +115,18 @@ namespace bonus_cheat
             }
         }
 
-        private void PopulateTileRack()
+        private void PopulateRacks()
         {
-
-            char[] rack = this.bonus.getRackLetters();
-            for (int i = rack.Length - 1; i >= 0; i--)
+            foreach (Bonus.Entity entity in (Bonus.Entity[])Enum.GetValues(typeof(Bonus.Entity)))
             {
-                Button tileButton = new Button
+                StackPanel rack = GetRackForEntity(entity);
+                rack.Children.Clear();
+
+                char[] letters = this.bonus.GetEntityLetters(entity);
+                if (entity == Bonus.Entity.Rack)
                 {
-                    Content = rack[i],
-                    Width = 40,
-                    Height = 40,
-                    Margin = new Thickness(5)
-                };
-
-                tileButton.Click += TileButton_Click;
-
-                tileRack.Children.Add(tileButton);
-            }
-        }
-
-        private void PopulatePlayerRacks()
-        {
-            foreach (Bonus.Player player in (Bonus.Player[])Enum.GetValues(typeof(Bonus.Player)))
-            {
-                char[] letters = this.bonus.getPlayerLetters(player);
+                    Array.Reverse(letters);
+                }
                 for (int i = 0; i < letters.Length; i++)
                 {
                     Button tileButton = new Button
@@ -150,7 +139,7 @@ namespace bonus_cheat
 
                     tileButton.Click += TileButton_Click;
 
-                    getRackForPlayer(player).Children.Add(tileButton);
+                    rack.Children.Add(tileButton);
                 }
             }
         }
@@ -167,18 +156,59 @@ namespace bonus_cheat
         {
             var button = (Button)sender;
             var stack = (StackPanel)button.Parent;
+            Bonus.Entity entity;
+            int index = stack.Children.IndexOf(sender as UIElement);
 
-            MessageBox.Show("Selected " + stack.Children.IndexOf(sender as UIElement));
+            if (stack == leftPlayerRack)
+            {
+                entity = Bonus.Entity.Player1;
+            }
+            else if (stack == rightPlayerRack)
+            {
+                entity = Bonus.Entity.Player2;
+            }
+            else if (stack == tileRack)
+            {
+                index = Bonus.BONUS_NUM_PLAYER_LETTERS - index - 1;
+                entity = Bonus.Entity.Rack;
+            }
+            else
+            {
+                return;
+            }
+
+            ShowSelectionWindow(entity, index, this.bonus.GetEntityLetters(entity)[index]);
         }
 
-        private StackPanel getRackForPlayer(Bonus.Player player)
+        private StackPanel GetRackForEntity(Bonus.Entity entity)
         {
-            return new Dictionary<Bonus.Player, StackPanel>
+            return new Dictionary<Bonus.Entity, StackPanel>
             {
-                { Bonus.Player.Player1, leftPlayerRack },
-                { Bonus.Player.Player2, rightPlayerRack }
-            }[player];
+                { Bonus.Entity.Player1, leftPlayerRack },
+                { Bonus.Entity.Player2, rightPlayerRack },
+                { Bonus.Entity.Rack, tileRack }
+            }[entity];
+        }
+
+        private void ShowSelectionWindow(Bonus.Entity entity, int index, char letter)
+        {
+            SelectionWindow selectionWindow = new SelectionWindow(letter, this.bonus.Letters);
+            selectionWindow.ShowDialog();
+
+            if (selectionWindow.DialogResult.HasValue && selectionWindow.DialogResult.Value)
+            {
+                string? selectedOption = selectionWindow.letterSelectionComboBox.SelectedItem?.ToString();
+                if (selectedOption == null)
+                {
+                    return;
+                }
+
+                this.bonus.SetEntityLetter(entity, index, selectedOption[0]);
+                this.Refresh();
+            }
+            
         }
     }
-
 }
+
+
