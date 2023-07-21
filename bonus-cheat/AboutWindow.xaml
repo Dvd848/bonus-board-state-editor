@@ -1,0 +1,18 @@
+﻿<Window x:Class="bonus_cheat.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:bonus_cheat"
+        mc:Ignorable="d"
+        Title="אודות" Height="200" Width="300" ResizeMode="NoResize">
+    <Grid>
+        <TextBlock Text="עורך הלוח של בונוס" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" Margin="0,20,0,0"/>
+        <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+            <Hyperlink NavigateUri="https://github.com/Dvd848/bonus-cheat" RequestNavigate="Hyperlink_RequestNavigate">
+                דף הפרויקט
+            </Hyperlink>
+        </TextBlock>
+        <Button Content="OK" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,130,0,0" Click="OkButton_Click" Height="20" Width="70"/>
+    </Grid>
+</Window>

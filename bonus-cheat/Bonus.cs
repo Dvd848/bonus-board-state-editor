@@ -70,20 +70,6 @@ namespace bonus_cheat
                     letters[index++] = letter;
                 }
             }
-
-            /*
-            byte[] p1letters = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER1_LETTERS, BONUS_NUM_PLAYER_LETTERS);
-            byte[] p2letters = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER2_LETTERS, BONUS_NUM_PLAYER_LETTERS);
-            byte[] rack = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_RACK, BONUS_NUM_PLAYER_LETTERS);
-
-            byte[] board = this.memoryWriter.ReadMemory(baseAddress + BONUS_MEM_OFFSET_BOARD, BONUS_BOARD_SIZE);
-
-            char[] letters = GetEntityLetters(Entity.Player1);
-            char[,] boardArr = GetBoard();
-            */
-
-            //this.memoryWriter.WriteMemory(baseAddress + BONUS_MEM_OFFSET_PLAYER1_LETTERS, new byte[]{ 0x90, 0x91, 0x92});
-
         }
 
         public char[] GetEntityLetters(Entity entity)
@@ -200,7 +186,6 @@ namespace bonus_cheat
                 throw new ArgumentException("Invalid UTF-8 character");
             }
 
-            // Get the corresponding Code Page 862 byte
             return (byte)(index + CODE_PAGE_862_START);
         }
     }

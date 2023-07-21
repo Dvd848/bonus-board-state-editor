@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,9 +34,9 @@ namespace bonus_cheat
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                Debug.WriteLine(e.Message);
+                MessageBox.Show("שגיאה בהתחברות למשחק!");
                 throw;
-                // TODO: Handle
             }
 
         }
@@ -234,9 +235,21 @@ namespace bonus_cheat
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Debug.WriteLine(ex.Message);
+                MessageBox.Show("שגיאה!");
             }
 
+        }
+
+        private void Menu_ClickExit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Menu_ClickAbout(object sender, RoutedEventArgs e)
+        {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
         }
     }
 }
