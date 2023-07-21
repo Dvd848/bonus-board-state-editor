@@ -75,6 +75,6 @@
         </StackPanel>
 
         <!-- Tile Rack -->
-        <Button Grid.Row="1" Grid.Column="1" Name="refreshButton" Content="רענון" Click="refreshButton_Click" Margin="0,0,0,20"/>
+        <Button Grid.Row="1" Grid.Column="1" Name="refreshButton" Content="רענון" Click="RefreshButton_Click" Margin="0,0,0,20"/>
     </Grid>
 </Window>
