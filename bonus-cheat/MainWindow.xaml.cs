@@ -149,7 +149,11 @@ namespace bonus_cheat
             var button = (Button)sender;
             var row = Grid.GetRow((UIElement)button.Parent);
             var col = Grid.GetColumn((UIElement)button.Parent);
-            MessageBox.Show($"Button clicked at Row: {row}, Column: {col}");
+
+            string? content = button.Content?.ToString();
+            char letter = (content == null) ? '?' : content[0];
+            
+            ShowBoardSelectionWindow(row, col, letter);
         }
 
         private void TileButton_Click(object sender, RoutedEventArgs e)
@@ -172,7 +176,7 @@ namespace bonus_cheat
                 return;
             }
 
-            ShowSelectionWindow(entity, index, this.bonus.GetEntityLetters(entity)[index]);
+            ShowRackSelectionWindow(entity, index, this.bonus.GetEntityLetters(entity)[index]);
         }
 
         private StackPanel GetRackForEntity(Bonus.Entity entity)
@@ -184,7 +188,7 @@ namespace bonus_cheat
             }[entity];
         }
 
-        private void ShowSelectionWindow(Bonus.Entity entity, int index, char letter)
+        private void ShowRackSelectionWindow(Bonus.Entity entity, int index, char letter)
         {
             SelectionWindow selectionWindow = new SelectionWindow(letter, this.bonus.Letters);
             selectionWindow.ShowDialog();
@@ -201,6 +205,25 @@ namespace bonus_cheat
                 this.Refresh();
             }
             
+        }
+
+        private void ShowBoardSelectionWindow(int row, int col, char letter)
+        {
+            SelectionWindow selectionWindow = new SelectionWindow(letter, this.bonus.Letters);
+            selectionWindow.ShowDialog();
+
+            if (selectionWindow.DialogResult.HasValue && selectionWindow.DialogResult.Value)
+            {
+                string? selectedOption = selectionWindow.letterSelectionComboBox.SelectedItem?.ToString();
+                if (selectedOption == null)
+                {
+                    return;
+                }
+
+                this.bonus.SetBoardLetter(row, col, selectedOption[0]);
+                this.Refresh();
+            }
+
         }
 
         private void refreshButton_Click(object sender, RoutedEventArgs e)
