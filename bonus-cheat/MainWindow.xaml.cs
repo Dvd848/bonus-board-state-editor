@@ -117,7 +117,7 @@ namespace bonus_cheat
 
         private void PopulateRacks()
         {
-            foreach (Bonus.Entity entity in (Bonus.Entity[])Enum.GetValues(typeof(Bonus.Entity)))
+            foreach (Bonus.Entity entity in new Bonus.Entity[] {Bonus.Entity.Player1, Bonus.Entity.Player2})
             {
                 StackPanel rack = GetRackForEntity(entity);
                 rack.Children.Clear();
@@ -167,11 +167,6 @@ namespace bonus_cheat
             {
                 entity = Bonus.Entity.Player2;
             }
-            else if (stack == tileRack)
-            {
-                index = Bonus.BONUS_NUM_PLAYER_LETTERS - index - 1;
-                entity = Bonus.Entity.Rack;
-            }
             else
             {
                 return;
@@ -185,8 +180,7 @@ namespace bonus_cheat
             return new Dictionary<Bonus.Entity, StackPanel>
             {
                 { Bonus.Entity.Player1, leftPlayerRack },
-                { Bonus.Entity.Player2, rightPlayerRack },
-                { Bonus.Entity.Rack, tileRack }
+                { Bonus.Entity.Player2, rightPlayerRack }
             }[entity];
         }
 
