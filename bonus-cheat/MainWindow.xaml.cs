@@ -105,7 +105,9 @@ namespace bonus_cheat
                             {
                                 Content = letter,
                                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                                VerticalAlignment = VerticalAlignment.Stretch
+                                VerticalAlignment = VerticalAlignment.Stretch,
+                                FontSize = 18,
+                                FontWeight = FontWeights.Bold
                             };
 
                             cellButton.Click += BoardButton_Click;
@@ -141,7 +143,9 @@ namespace bonus_cheat
                         Content = letters[i],
                         Width = 40,
                         Height = 40,
-                        Margin = new Thickness(5)
+                        Margin = new Thickness(5),
+                        FontSize = 18,
+                        FontWeight = FontWeights.Bold
                     };
 
                     tileButton.Click += TileButton_Click;
