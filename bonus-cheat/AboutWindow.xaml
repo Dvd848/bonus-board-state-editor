@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bonus_cheat"
         mc:Ignorable="d"
-        Title="אודות" Height="200" Width="300" ResizeMode="NoResize">
+        Title="אודות" Height="200" Width="300" ResizeMode="NoResize" FlowDirection="RightToLeft">
     <Grid>
         <TextBlock Text="עורך הלוח של בונוס" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" Margin="0,20,0,0"/>
         <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">

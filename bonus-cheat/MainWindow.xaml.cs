@@ -55,10 +55,18 @@ namespace bonus_cheat
                     switch (letter)
                     {
                         case ((char)Bonus.SpecialChars.Space):
+                            Brush background = new SolidColorBrush(Color.FromRgb(0x18, 0x5d, 0x82));
+
+                            if (row == 0 || row == Bonus.BONUS_BOARD_DIMENTION - 1 || col == 0 || col == Bonus.BONUS_BOARD_DIMENTION - 1)
+                            {
+                                background = new SolidColorBrush(Color.FromRgb(0xdb, 0xae, 0x00));
+                            }
+
                             cellBorder = new Border
                             {
-                                BorderBrush = Brushes.Gray,
-                                BorderThickness = new Thickness(1)
+                                BorderBrush = Brushes.Black,
+                                BorderThickness = new Thickness(1),
+                                Background = background
                             };
 
                             TextBlock cellTextBlock = new TextBlock
@@ -66,7 +74,7 @@ namespace bonus_cheat
                                 Text = "",
                                 HorizontalAlignment = HorizontalAlignment.Center,
                                 VerticalAlignment = VerticalAlignment.Center,
-                                FontSize = 18
+                                FontSize = 18,
                             };
                             cellBorder.Child = cellTextBlock;
 
@@ -78,16 +86,16 @@ namespace bonus_cheat
                             {
                                 blockedCell = new Border
                                 {
-                                    Background = Brushes.White,
-                                    BorderBrush = Brushes.White,
-                                    BorderThickness = new Thickness(1)
+                                    BorderBrush = new SolidColorBrush(Color.FromRgb(0x2c, 0x75, 0xa2)),
+                                    BorderThickness = new Thickness(1),
+                                    Background = new SolidColorBrush(Color.FromRgb(0x2c, 0x75, 0xa2))
                                 };
                             }
                             else
                             {
                                 blockedCell = new Border
                                 {
-                                    BorderBrush = Brushes.Gray,
+                                    BorderBrush = Brushes.Black,
                                     BorderThickness = new Thickness(1),
                                     Background = new SolidColorBrush(Colors.PeachPuff),
                                 };
@@ -97,7 +105,7 @@ namespace bonus_cheat
                         default:
                             cellBorder = new Border
                             {
-                                BorderBrush = Brushes.Gray,
+                                BorderBrush = Brushes.Black,
                                 BorderThickness = new Thickness(1)
                             };
 

@@ -17,66 +17,68 @@
                     <MenuItem Header="אודות" Click="Menu_ClickAbout"/>
                 </MenuItem>
             </Menu>
-            <TextBox AcceptsReturn="True" />
-        </DockPanel>
-        <Grid FlowDirection="LeftToRight">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="80"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+        
+            <Grid FlowDirection="LeftToRight"  Background="#2c75a2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="80"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!-- Left player's rack -->
+                    <ColumnDefinition Width="600"/>
+                    <!-- Center Scrabble board -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- Right player's rack -->
+                </Grid.ColumnDefinitions>
+
                 <!-- Left player's rack -->
-                <ColumnDefinition Width="600"/>
-                <!-- Center Scrabble board -->
-                <ColumnDefinition Width="*"/>
+                <StackPanel Name="leftPlayerRack" Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                </StackPanel>
+
+                <!-- Scrabble Board -->
+                <Border Grid.Row="0" Grid.Column="1" Margin="10">
+                    <Grid Name="scrabbleBoard" Margin="10,39,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                    </Grid>
+                </Border>
+
                 <!-- Right player's rack -->
-            </Grid.ColumnDefinitions>
+                <StackPanel Name="rightPlayerRack" Grid.Row="0" Grid.Column="2" 
+                            Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                            Margin="10">
+                </StackPanel>
 
-            <!-- Left player's rack -->
-            <StackPanel Name="leftPlayerRack" Grid.Row="0" Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
-            </StackPanel>
-
-            <!-- Scrabble Board -->
-            <Border Grid.Row="0" Grid.Column="1" Margin="10">
-                <Grid Name="scrabbleBoard" Margin="10,39,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                </Grid>
-            </Border>
-
-            <!-- Right player's rack -->
-            <StackPanel Name="rightPlayerRack" Grid.Row="0" Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
-            </StackPanel>
-
-            <Button Grid.Row="1" Grid.Column="1" Name="refreshButton" Content="רענון" Click="RefreshButton_Click" Margin="0,0,0,20"/>
-        </Grid>
+                <Button Grid.Row="1" Grid.Column="1" Name="refreshButton" Content="רענון" Click="RefreshButton_Click" Margin="0,0,0,20"/>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>
