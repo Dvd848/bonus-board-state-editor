@@ -202,6 +202,11 @@ namespace bonus_cheat
             }
             
         }
+
+        private void refreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Refresh();
+        }
     }
 }
 

@@ -75,8 +75,6 @@
         </StackPanel>
 
         <!-- Tile Rack -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Name="tileRack" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-            <!-- Add tile content here, e.g., Buttons representing tiles -->
-        </StackPanel>
+        <Button Grid.Row="1" Grid.Column="1" Name="refreshButton" Content="רענון" Click="refreshButton_Click" Margin="0,0,0,20"/>
     </Grid>
 </Window>
