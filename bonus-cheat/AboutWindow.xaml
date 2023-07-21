@@ -9,7 +9,7 @@
     <Grid>
         <TextBlock Text="עורך הלוח של בונוס" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="18" Margin="0,20,0,0"/>
         <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-            <Hyperlink NavigateUri="https://github.com/Dvd848/bonus-cheat" RequestNavigate="Hyperlink_RequestNavigate">
+            <Hyperlink NavigateUri="https://github.com/Dvd848/bonus-board-state-editor" RequestNavigate="Hyperlink_RequestNavigate">
                 דף הפרויקט
             </Hyperlink>
         </TextBlock>
