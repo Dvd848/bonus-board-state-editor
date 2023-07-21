@@ -49,6 +49,12 @@ namespace bonus_cheat
             Rack
         }
 
+        public enum SpecialChars
+        {
+            Space = ' ',
+            Blocked = '#'
+        }
+
         public Bonus()
         {
             this.memoryWriter = new ProcessMemoryWriter(DOSBOX_PROCESS_NAME);
@@ -158,11 +164,11 @@ namespace bonus_cheat
         {
             if (codePage862Byte == 0x20)
             {
-                return ' ';
+                return ((char)SpecialChars.Space);
             }
-            else if (codePage862Byte == 0x30)
+            else if ( (codePage862Byte >= 0x30) && (codePage862Byte <= 0x34) )
             {
-                return '#';
+                return ((char)SpecialChars.Blocked);
             }
 
             if (codePage862Byte < CODE_PAGE_862_START || codePage862Byte > CODE_PAGE_862_END)

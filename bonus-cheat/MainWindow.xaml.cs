@@ -49,66 +49,81 @@ namespace bonus_cheat
 
         private void InitializeScrabbleBoard()
         {
+            scrabbleBoard.Children.Clear();
             char[,] board = this.bonus.GetBoard();
             
             for (int row = 0; row < Bonus.BONUS_BOARD_DIMENTION; row++)
             {
                 for (int col = 0; col < Bonus.BONUS_BOARD_DIMENTION; col++)
                 {
-                    string letter = board[row, col].ToString();
+                    char letter = board[row, col].ToString()[0];
 
                     UIElement child;
+                    Border cellBorder;
 
-                    if (letter == " ")
+                    switch (letter)
                     {
-                        Border cellBorder = new Border
-                        {
-                            BorderBrush = Brushes.Gray,
-                            BorderThickness = new Thickness(1)
-                        };
+                        case ((char)Bonus.SpecialChars.Space):
+                            cellBorder = new Border
+                            {
+                                BorderBrush = Brushes.Gray,
+                                BorderThickness = new Thickness(1)
+                            };
 
-                        TextBlock cellTextBlock = new TextBlock
-                        {
-                            Text = "",
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            FontSize = 18
-                        };
-                        cellBorder.Child = cellTextBlock;
+                            TextBlock cellTextBlock = new TextBlock
+                            {
+                                Text = "",
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                FontSize = 18
+                            };
+                            cellBorder.Child = cellTextBlock;
 
-                        child = cellBorder;
+                            child = cellBorder;
+                            break;
+                        case ((char)Bonus.SpecialChars.Blocked):
+                            Border blockedCell;
+                            if (row == 0 || row == Bonus.BONUS_BOARD_DIMENTION - 1 || col == 0 || col == Bonus.BONUS_BOARD_DIMENTION - 1)
+                            {
+                                blockedCell = new Border
+                                {
+                                    Background = Brushes.White,
+                                    BorderBrush = Brushes.White,
+                                    BorderThickness = new Thickness(1)
+                                };
+                            }
+                            else
+                            {
+                                blockedCell = new Border
+                                {
+                                    BorderBrush = Brushes.Gray,
+                                    BorderThickness = new Thickness(1),
+                                    Background = new SolidColorBrush(Colors.PeachPuff),
+                                };
+                            }
+                            child = blockedCell;
+                            break;
+                        default:
+                            cellBorder = new Border
+                            {
+                                BorderBrush = Brushes.Gray,
+                                BorderThickness = new Thickness(1)
+                            };
+
+                            Button cellButton = new Button
+                            {
+                                Content = letter,
+                                HorizontalAlignment = HorizontalAlignment.Stretch,
+                                VerticalAlignment = VerticalAlignment.Stretch
+                            };
+
+                            cellButton.Click += BoardButton_Click;
+
+                            cellBorder.Child = cellButton;
+                            child = cellBorder;
+                            break;
                     }
-                    else if (letter == "#")
-                    {
-                        Border whiteCell = new Border
-                        {
-                            Background = Brushes.White,
-                            BorderBrush = Brushes.White,
-                            BorderThickness = new Thickness(1)
-                        };
-                        child = whiteCell;
-                    }
-                    else
-                    {
-                        Border cellBorder = new Border
-                        {
-                            BorderBrush = Brushes.Gray,
-                            BorderThickness = new Thickness(1)
-                        };
-
-                        Button cellButton = new Button
-                        {
-                            Content = letter,
-                            HorizontalAlignment = HorizontalAlignment.Stretch,
-                            VerticalAlignment = VerticalAlignment.Stretch
-                        };
-
-                        cellButton.Click += BoardButton_Click;
-
-                        cellBorder.Child = cellButton;
-                        child = cellBorder;
-                    }
-
+                    
                     Grid.SetRow(child, row);
                     Grid.SetColumn(child, col);
                     scrabbleBoard.Children.Add(child);
